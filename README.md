@@ -2,7 +2,7 @@
 
 Generates plots to compare properties of protein sequences from two different FASTA files
 
-Jamie McGowan, 2019
+[Jamie McGowan, 2019](https://jamiemcgowan.ie)
 
 ### Usage:
 	
