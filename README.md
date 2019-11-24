@@ -8,7 +8,7 @@ Generates plots to compare properties of protein sequences from two different FA
 	
 	python CompareSequences.py proteinsA.fasta proteinsB.fasta
 	
-49 plots are generated in the working directory in PDF format.
+Plots are generated in the working directory in PDF format, with the filename prefix "plot".
 
 * Aromaticity
 * Gravy index

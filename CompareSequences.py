@@ -4,7 +4,6 @@
 # Jamie McGowan, 2019 <jamie.mcgowan@mu.ie>
 # Usage: python CompareSequences.py one.fasta two.fasta
 
-
 import sys
 from Bio import SeqIO
 from Bio import SeqUtils
@@ -34,6 +33,7 @@ for record in SeqIO.parse(sys.argv[2], "fasta"):
 number_of_sequences = pd.DataFrame([[sys.argv[1], len(sequences_a)], [sys.argv[2], len(sequences_b)]], columns = ["Filename", "Number of Sequences"])
 
 ax = sns.barplot(x = "Filename", y = "Number of Sequences", data = number_of_sequences)
+plt.title("Number of Sequences")
 plt.savefig("plotNumberOfSequences.pdf")
 plt.clf()
 # plt.show()
@@ -53,6 +53,7 @@ for aa in amino_acids:
 	amino_acids_count = pd.DataFrame(amino_acids_count, columns = ["Filename", "Number of " + aa_three_letter + " residues"])
 
 	ax = sns.boxplot(x = "Filename", y = "Number of " + aa_three_letter + " residues", data = amino_acids_count)
+	plt.title("Number of " + aa_three_letter + " Residues")
 	plt.savefig("plotNumberOf" + aa_three_letter + "Residues.pdf")
 	plt.clf()
 	# plt.show()
@@ -72,6 +73,7 @@ for aa in amino_acids:
 	amino_acids_percentage = pd.DataFrame(amino_acids_percentage, columns = ["Filename", "Percentage of " + aa_three_letter + " residues"])
 
 	ax = sns.boxplot(x = "Filename", y = "Percentage of " + aa_three_letter + " residues", data = amino_acids_percentage)
+	plt.title("Percentage of " + aa_three_letter + " Residues")
 	plt.savefig("plotPercentageOf" + aa_three_letter + "Residues.pdf")
 	plt.clf()
 	# plt.show()
@@ -88,6 +90,7 @@ for protein in sequences_b:
 protein_lengths = pd.DataFrame(protein_lengths, columns = ["Filename", "Protein lengths"])
 
 ax = sns.boxplot(x = "Filename", y = "Protein lengths", data = protein_lengths)
+plt.title("Distribution of Protein Lengths")
 plt.savefig("plotProteinLengths.pdf")
 plt.clf()
 # plt.show()
@@ -104,6 +107,7 @@ for protein in sequences_b:
 molecular_weight = pd.DataFrame(molecular_weight, columns = ["Filename", "Molecular Weight"])
 
 ax = sns.boxplot(x = "Filename", y = "Molecular Weight", data = molecular_weight)
+plt.title("Distribution of Protein Molecular Weights")
 plt.savefig("plotMolecularWeights.pdf")
 plt.clf()
 # plt.show()
@@ -139,6 +143,7 @@ for protein in sequences_b:
 gravy_index = pd.DataFrame(gravy_index, columns = ["Filename", "Gravy Index"])
 
 ax = sns.boxplot(x = "Filename", y = "Gravy Index", data = gravy_index)
+plt.title("Distribution of Gravy Scores")
 plt.savefig("plotGravyIndex.pdf")
 # plt.show()
 plt.clf()
@@ -146,6 +151,7 @@ plt.clf()
 aromaticity = pd.DataFrame(aromaticity, columns = ["Filename", "Aromaticity"])
 
 ax = sns.boxplot(x = "Filename", y = "Aromaticity", data = aromaticity)
+plt.title("Distribution of Aromaticity Values")
 plt.savefig("plotAromaticity.pdf")
 # plt.show()
 plt.clf()
@@ -153,6 +159,7 @@ plt.clf()
 instability_index = pd.DataFrame(instability_index, columns = ["Filename", "Instability Index"])
 
 ax = sns.boxplot(x = "Filename", y = "Instability Index", data = instability_index)
+plt.title("Distribution of Instability Indexes")
 plt.savefig("plotInstabilityIndex.pdf")
 # plt.show()
 plt.clf()
@@ -160,6 +167,7 @@ plt.clf()
 isoelectric_point = pd.DataFrame(isoelectric_point, columns = ["Filename", "Isoelectric Point"])
 
 ax = sns.boxplot(x = "Filename", y = "Isoelectric Point", data = isoelectric_point)
+plt.title("Distribution of Isoelectric Points")
 plt.savefig("plotIsoelectricPoint.pdf")
 # plt.show()
 plt.clf()
@@ -184,11 +192,82 @@ for i in range(0, len(secondary_structure_fraction)):
 test_secondary_structure_fraction = pd.DataFrame(test_secondary_structure_fraction, columns = ["Filename", "Structure", "Fraction"])
 
 ax = sns.violinplot(x = "Filename", y = "Fraction", hue = "Structure", data = test_secondary_structure_fraction)
+plt.title("Proportion of Secondary Structures")
 plt.savefig("plotSecondaryStructureFraction.pdf")
 # plt.show()
 plt.clf()
 
 ax = sns.violinplot(x = "Structure", y = "Fraction", hue = "Filename", data = test_secondary_structure_fraction)
+plt.title("Proportion of Secondary Structures")
 plt.savefig("plotSecondaryStructureFractionAlt.pdf")
+# plt.show()
+plt.clf()
+
+# Box plots for amino acids types
+# TODO: Rewrite
+nonpolar_percentages = []
+polar_percentages = []
+negative_percentages = []
+positive_percentages = []
+
+for protein in sequences_a:
+	protein_seq = str(protein.seq)
+	protein_len = len(str(protein.seq))
+
+	nonpolar_count = 0
+	polar_count = 0
+	negative_count = 0
+	positive_count = 0
+
+	for aa in nonpolar:
+		nonpolar_count += protein_seq.count(aa)
+
+	for aa in polar:
+		polar_count += protein_seq.count(aa)
+
+	for aa in negative:
+		negative_count += protein_seq.count(aa)
+
+	for aa in positive:
+		positive_count += protein_seq.count(aa)
+
+	nonpolar_percentages.append([sys.argv[1], "Nonpolar", (100 * ((1.0 * nonpolar_count) / protein_len))])
+	polar_percentages.append([sys.argv[1], "Polar", (100 * ((1.0 * polar_count) / protein_len))])
+	negative_percentages.append([sys.argv[1], "Negative", (100 * ((1.0 * negative_count) / protein_len))])
+	positive_percentages.append([sys.argv[1], "Positive", (100 * ((1.0 * positive_count) / protein_len))])
+
+for protein in sequences_b:
+	protein_seq = str(protein.seq)
+	protein_len = len(str(protein.seq))
+
+	nonpolar_count = 0
+	polar_count = 0
+	negative_count = 0
+	positive_count = 0
+
+	for aa in nonpolar:
+		nonpolar_count += protein_seq.count(aa)
+
+	for aa in polar:
+		polar_count += protein_seq.count(aa)
+
+	for aa in negative:
+		negative_count += protein_seq.count(aa)
+
+	for aa in positive:
+		positive_count += protein_seq.count(aa)
+
+	nonpolar_percentages.append([sys.argv[2], "Nonpolar", (100 * ((1.0 * nonpolar_count) / protein_len))])
+	polar_percentages.append([sys.argv[2], "Polar", (100 * ((1.0 * polar_count) / protein_len))])
+	negative_percentages.append([sys.argv[2], "Negative", (100 * ((1.0 * negative_count) / protein_len))])
+	positive_percentages.append([sys.argv[2], "Positive", (100 * ((1.0 * positive_count) / protein_len))])
+
+
+amino_acid_types = nonpolar_percentages + polar_percentages + negative_percentages + positive_percentages
+amino_acid_types = pd.DataFrame(amino_acid_types, columns = ["Filename", "Amino Acid Class", "Percentage"])
+
+ax = sns.violinplot(x = "Filename", y = "Percentage", hue = "Amino Acid Class", data = amino_acid_types)
+plt.title("Proportion of Amino Acid Classes")
+plt.savefig("plotAminoAcidClasses.pdf")
 # plt.show()
 plt.clf()
