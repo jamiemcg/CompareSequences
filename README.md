@@ -33,8 +33,7 @@ Plots are generated in the working directory in PDF format, with the filename pr
 
 
 ### Example Plots
+![](test_data/plotAminoAcidClasses.png)
 ![](test_data/plotSecondaryStructureFraction.png)
 ![](test_data/plotNumberOfCysResidues.png)
 ![](test_data/plotPercentageOfCysResidues.png)
-
-
